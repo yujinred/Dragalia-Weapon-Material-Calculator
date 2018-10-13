@@ -1,4 +1,4 @@
-#Dragalia Weapon Material Calculator
+# Dragalia Weapon Material Calculator
 
 This is a program to calculate how much material you need to make your desired weapons.
 
