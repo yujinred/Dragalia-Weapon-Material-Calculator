@@ -19,8 +19,8 @@
     <div id="app" class="ui stackable grid" style="padding: 1em;">
         <div id="hero-scroller" class="six wide computer tablet column centered">
         <div id="main-panel" class="ui center aligned">
-            <div class="ui header">Dragalia Weapon Material Calculator</div>
-
+            <h1 class="ui header">Dragalia Weapon Material Calculator</h1>
+            <div class="ui divider"></div>
             <!-- Sort and filtering -->
             <div class="ui form">
                 <div class="one field">
@@ -78,7 +78,7 @@
                     </div>
                 </div>
             </div>
-
+            <div class="ui divider"></div>
             <!-- Weapon List -->
             <table class="ui celled padded table">
                 <thead>
@@ -94,20 +94,65 @@
                 </thead>
                 <tbody>
                     <tr v-for="weapon in weapon_list">
-                        <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
+                        <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
                         <td>{{weapon.WeaponName}}</td>
                         <td>{{weapon.Type}}</td>
                         <td>{{weapon.Rarity}}</td>
                         <td>{{weapon.ElementalType}}</td>
                         <td>{{weapon.tier}}</td>
-                        <td></td>
+                        <td><button class="ui button" v-on:click="addWeaponToRepository(weapon)">Add</button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         </div>
         <div id="hero-scroller" class="six wide computer tablet column centered">
-                <div class="ui header">Weapon Repository</div>
+            <!-- Material List -->
+            <div class="ui header">Materials Needed</div>
+            <!-- Weapon Repository List -->
+            <table class="ui celled padded table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Material</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr v-for="material in requiredMaterials">
+                            <td><img :name="material.Name" style="width: 70px; height: 70px" :src="'images/materials/' + material.Id + '.png'"></td>
+                            <td>{{material.Name}}</td>
+                            <td>{{material.quantity}}</td>
+                        </tr>
+                    </tbody>
+            </table>
+            <div class="ui hidden divider"></div>
+            <div class="ui divider"></div>
+            <div class="ui header">Weapon Repository</div>
+            
+            <!-- Weapon Repository List -->
+            <table class="ui celled padded table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Modify Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="weapon in selectedWeapons">
+                        <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
+                        <td>{{weapon.WeaponName}}</td>
+                        <td>{{weapon.quantity}}</td>
+                        <td>
+                            <button class="ui button" v-on:click="addWeaponToRepository(weapon)">+</button>
+                            <button class="ui button" v-on:click="removeWeaponToRepository(weapon)">-</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
         </div>
 
     </div>
@@ -115,26 +160,40 @@
 
 
 <script src="weapon_data.js"></script>
+<script src="material_data.js"></script>
 <script>
 weapons.forEach(function(weapon) {
     weapon.tier = Math.floor(weapon.CraftNodeId/100).toString();
+    weapon.parentWeapons = [];
     weapon.quantity = 0;
+    weapon.AssembleCoin = parseInt(weapon.AssembleCoin);
+    weapon.CraftMaterialQuantity1 = parseInt(weapon.CraftMaterialQuantity1);
+    weapon.CraftMaterialQuantity2 = parseInt(weapon.CraftMaterialQuantity2);
+    weapon.CraftMaterialQuantity3 = parseInt(weapon.CraftMaterialQuantity3);
+    weapon.CraftMaterialQuantity4 = parseInt(weapon.CraftMaterialQuantity4);
+    weapon.CraftMaterialQuantity5 = parseInt(weapon.CraftMaterialQuantity5);
 });
+materials.forEach(function(material) {
+    material.quantity = 0;
+})
 
 new Vue({
     el: '#app',
     data: {
         all_weapons: weapons,
+        all_materials: materials,
         filters: {
             name: "",
             type: "",
             rarity: "",
             element: "",
             tier: ""
-        },
-        selectedWeapons: []
+        }
     },
     computed: {
+        material_list: function () {
+            return this.all_materials;
+        },
         weapon_list: function () {
             return this.all_weapons
                 .filter(weapon => this.filterWeapon(weapon.WeaponName, this.filters.name))
@@ -143,14 +202,75 @@ new Vue({
                 .filter(weapon => this.filterWeapon(weapon.ElementalType, this.filters.element))
                 .filter(weapon => this.filterWeapon(weapon.tier, this.filters.tier))
                 .sort(function(weapon1, weapon2) {
-                    return weapon1.FortCraftLevel - weapon2.FortCraftLevel;
+                    return weapon1.WeaponName - weapon2.WeaponName;
+                    // return weapon1.FortCraftLevel - weapon2.FortCraftLevel;
                 })
 
+        },
+        selectedWeapons: function () {
+            return this.all_weapons
+                .filter(weapon => weapon.quantity > 0);
+        },
+        requiredMaterials: function () {
+            return this.all_materials
+            .filter(material => material.quantity > 0);
         }
     },
     methods: {
+        findArrayIndexBasedOnAttribute: function (array, attribute, value) {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i][attribute].toLowerCase() === value.toLowerCase()) {
+                    return i;
+                }
+            }
+            return -1;
+        },
         filterWeapon: function(element1, element2) {
             return element1.toLowerCase().includes(element2.toLowerCase());
+        },
+        addWeaponToRepository: function(weapon) {
+            weapon.quantity++;
+            this.addMaterialsBasedOnWeapon(weapon);
+        },
+        removeWeaponToRepository: function(weapon) {
+            weapon.quantity--;
+            this.removeMaterialsBasedOnWeapon(weapon);
+        },
+        addRupies: function(amount) {
+            var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", "Rupies");
+            this.all_materials[index].quantity += amount;
+        },
+        removeRupies: function(amount) {
+            var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", "Rupies");
+            this.all_materials[index].quantity -= amount;
+        },
+        addMaterial: function(materialName, quantity) {
+            if (materialName === "0") return;
+            var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", materialName);
+            if (index === -1) console.log("cannot find material " + materialName);
+            this.all_materials[index].quantity += quantity;
+        },
+        removeMaterial: function(materialName, quantity) {
+            if (materialName === "0") return;
+            var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", materialName);
+            if (index === -1) console.log("cannot find material " + materialName);
+            this.all_materials[index].quantity -= quantity;
+        },
+        addMaterialsBasedOnWeapon: function(weapon) {
+            this.addRupies(weapon.AssembleCoin);
+            this.addMaterial(weapon.CraftMaterial1, weapon.CraftMaterialQuantity1);
+            this.addMaterial(weapon.CraftMaterial2, weapon.CraftMaterialQuantity2);
+            this.addMaterial(weapon.CraftMaterial3, weapon.CraftMaterialQuantity3);
+            this.addMaterial(weapon.CraftMaterial4, weapon.CraftMaterialQuantity4);
+            this.addMaterial(weapon.CraftMaterial5, weapon.CraftMaterialQuantity5);
+        },
+        removeMaterialsBasedOnWeapon: function(weapon) {
+            this.removeRupies(weapon.AssembleCoin);
+            this.removeMaterial(weapon.CraftMaterial1, weapon.CraftMaterialQuantity1);
+            this.removeMaterial(weapon.CraftMaterial2, weapon.CraftMaterialQuantity2);
+            this.removeMaterial(weapon.CraftMaterial3, weapon.CraftMaterialQuantity3);
+            this.removeMaterial(weapon.CraftMaterial4, weapon.CraftMaterialQuantity4);
+            this.removeMaterial(weapon.CraftMaterial5, weapon.CraftMaterialQuantity5);
         }
     }
 })
