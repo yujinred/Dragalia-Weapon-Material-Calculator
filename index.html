@@ -81,24 +81,25 @@
             <table class="ui celled padded table">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>Add Weapon</th>
+                        <th>Image</th>
                         <th>Name</th>
                         <th>Type</th>
                         <th>Rarity</th>
                         <th>Element</th>
                         <th>Tier</th>
-                        <th>Add Weapon</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="weapon in weapon_list">
+                        <td><button class="ui button" v-on:click="addWeaponToRepository(weapon)">Add</button></td>
                         <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
                         <td>{{weapon.WeaponName}}</td>
                         <td>{{weapon.Type}}</td>
                         <td>{{weapon.Rarity}}</td>
                         <td>{{weapon.ElementalType}}</td>
                         <td>{{weapon.tier}}</td>
-                        <td><button class="ui button" v-on:click="addWeaponToRepository(weapon)">Add</button></td>
                     </tr>
                 </tbody>
             </table>
