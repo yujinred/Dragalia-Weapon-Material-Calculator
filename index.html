@@ -239,7 +239,6 @@ new Vue({
             // add all parent materials
             if (weapon.includeParents) {
                 this.includeAllParentMaterials(weapon);
-                weapon.includeParents = false;
             }
         },
         removeWeaponToRepository: function(weapon) {
@@ -248,7 +247,6 @@ new Vue({
             // remove all the parent materials
             if (weapon.includeParents) {
                 this.excludeAllParentMaterials(weapon);
-                weapon.includeParents = false;
             }
         },
         addRupies: function(amount) {
