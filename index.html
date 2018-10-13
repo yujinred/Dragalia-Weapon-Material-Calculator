@@ -93,7 +93,9 @@
                 </thead>
                 <tbody>
                     <tr v-for="weapon in weapon_list">
-                        <td><button class="ui button" v-on:click="addWeaponToRepository(weapon)">Add</button></td>
+                        <td><button class="ui button" v-on:click="addWeaponToRepository(weapon)">Add</button>
+                            <button class="ui button" v-on:click="addAllPrereqWeapons(weapon)">Add All Prereq</button>
+                        </td>
                         <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
                         <td>{{weapon.WeaponName}}</td>
                         <td>{{weapon.Type}}</td>
@@ -115,7 +117,6 @@
                         <th></th>
                         <th>Name</th>
                         <th>Quantity</th>
-                        <th>Include All Parents</th>
                         <th>Modify Quantity</th>
                     </tr>
                 </thead>
@@ -125,15 +126,10 @@
                         <td>{{weapon.WeaponName}}</td>
                         <td>{{weapon.quantity}}</td>
                         <td>
-                            <div class="ui checkbox">
-                                <input type="checkbox" name="seeAllParentsCost" @change="toggleParentMaterials(weapon)" >
-                                <label for=""></label>
-                            </div>
-                        </td>
-                        <td>
                             <div>
                             <button class="ui button" v-on:click="addWeaponToRepository(weapon)">+</button>
                             <button class="ui button" v-on:click="removeWeaponToRepository(weapon)">-</button>
+                            <button class="ui button" v-on:click="removeAllWeaponsFromRepository(weapon)">remove all</button>
                             </div>
                         </td>
                     </tr>
@@ -237,18 +233,19 @@ new Vue({
         addWeaponToRepository: function(weapon) {
             weapon.quantity++;
             this.addMaterialsBasedOnWeapon(weapon);
-            // add all parent materials
-            if (weapon.includeParents) {
-                this.includeAllParentMaterials(weapon);
-            }
         },
         removeWeaponToRepository: function(weapon) {
             weapon.quantity--;
             this.removeMaterialsBasedOnWeapon(weapon);
-            // remove all the parent materials
-            if (weapon.includeParents) {
-                this.excludeAllParentMaterials(weapon);
+        },
+        removeAllWeaponsFromRepository: function(weapon) {
+            while (weapon.quantity != 0) {
+                this.removeWeaponToRepository(weapon);
             }
+        },
+        addAllPrereqWeapons: function(weapon) {
+            this.addWeaponToRepository(weapon);
+            this.includeAllParentMaterials(weapon);
         },
         addRupies: function(amount) {
             var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", "Rupies");
@@ -287,14 +284,6 @@ new Vue({
             this.removeMaterial(weapon.CraftMaterial4, weapon.CraftMaterialQuantity4);
             this.removeMaterial(weapon.CraftMaterial5, weapon.CraftMaterialQuantity5);
         },
-        toggleParentMaterials: function(weapon) {
-            if (weapon.includeParents) {
-                this.excludeAllParentMaterials(weapon);
-            } else {
-                this.includeAllParentMaterials(weapon);
-            }
-            weapon.includeParents = !weapon.includeParents;
-        },
         findParentWeaponBasedOnCraftId: function(ParentCraftNodeId, CraftGroupId) {
             var parentWeapon = this.all_weapons
                 .filter(weapon => weapon.CraftNodeId === ParentCraftNodeId)
@@ -308,7 +297,7 @@ new Vue({
             
             // need to max unbind weapon first
             for (var i = 0; i < 5; i++) {
-                this.addMaterialsBasedOnWeapon(parentWeapon);
+                this.addWeaponToRepository(parentWeapon);
                 this.includeAllParentMaterials(parentWeapon);
             }
         },
@@ -319,7 +308,7 @@ new Vue({
             
             // need to max unbind weapon first
             for (var i = 0; i < 5; i++) {
-                this.removeMaterialsBasedOnWeapon(parentWeapon);
+                this.removeWeaponToRepository(parentWeapon);
                 this.excludeAllParentMaterials(parentWeapon);
             }
         }
