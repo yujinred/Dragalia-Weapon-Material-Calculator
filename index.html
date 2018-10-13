@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="image/png" href="image/">
+    <link rel="icon" type="image/png" href="images/blacksmith.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"/>
     <script src="https://unpkg.com/vue"></script>
     <script 
@@ -17,10 +17,69 @@
 </head>
 <body>
     <div id="app" class="ui stackable grid" style="padding: 1em;">
-        <div id="hero-scroller" class="four wide computer tablet column centered" v-show="!expanded">
-        <div id="main-panel" class="ui center aligned header">
+        <div id="hero-scroller" class="six wide computer tablet column centered">
+        <div id="main-panel" class="ui center aligned">
             <div class="ui header">Dragalia Weapon Material Calculator</div>
 
+            <!-- Sort and filtering -->
+            <div class="ui form">
+                <div class="one field">
+                    <div class="field">
+                    <label>Search Weapon Name:</label>
+                    <input type="text" v-model="filters.name" v-on:input="resetIndex">
+                    </input>
+                    </div>
+                </div>
+                <div class="four fields">
+                    <div class="field">
+                    <label>Weapon</label>
+                    <select v-model="filters.type">
+                        <option selected value="">All</option>
+                        <option>Sword</option>
+                        <option>Blade</option>
+                        <option>Dagger</option>
+                        <option>Axe</option>
+                        <option>Lance</option>
+                        <option>Bow</option>
+                        <option>Wand</option>
+                        <option>Staff</option>
+                    </select>
+                    </div>
+                    <div class="field">
+                    <label>Rarity</label>
+                    <select v-model="filters.rarity">
+                        <option selected value="">All</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                    </div>
+                    <div class="field">
+                        <label>Element</label>
+                        <select v-model="filters.element">
+                            <option selected value="">All</option>
+                            <option>Flame</option>
+                            <option>Water</option>
+                            <option>Wind</option>
+                            <option>Shadow</option>
+                            <option>Light</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Tiers</label>
+                        <select v-model="filters.tier">
+                            <option selected value="">All</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weapon List -->
             <table class="ui celled padded table">
                 <thead>
                     <tr>
@@ -29,23 +88,25 @@
                         <th>Type</th>
                         <th>Rarity</th>
                         <th>Element</th>
+                        <th>Tier</th>
                         <th>Add Weapon</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="weapon in all_weapons">
+                    <tr v-for="weapon in weapon_list">
                         <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
                         <td>{{weapon.WeaponName}}</td>
                         <td>{{weapon.Type}}</td>
                         <td>{{weapon.Rarity}}</td>
                         <td>{{weapon.ElementalType}}</td>
+                        <td>{{weapon.tier}}</td>
                         <td></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         </div>
-        <div id="hero-scroller" class="four wide computer tablet column centered" v-show="!expanded">
+        <div id="hero-scroller" class="six wide computer tablet column centered">
                 <div class="ui header">Weapon Repository</div>
         </div>
 
@@ -56,12 +117,41 @@
 <script src="weapon_data.js"></script>
 <script>
 weapons.forEach(function(weapon) {
-})
+    weapon.tier = Math.floor(weapon.CraftNodeId/100).toString();
+    weapon.quantity = 0;
+});
 
 new Vue({
     el: '#app',
     data: {
-        all_weapons: weapons
+        all_weapons: weapons,
+        filters: {
+            name: "",
+            type: "",
+            rarity: "",
+            element: "",
+            tier: ""
+        },
+        selectedWeapons: []
+    },
+    computed: {
+        weapon_list: function () {
+            return this.all_weapons
+                .filter(weapon => this.filterWeapon(weapon.WeaponName, this.filters.name))
+                .filter(weapon => this.filterWeapon(weapon.Type, this.filters.type))
+                .filter(weapon => this.filterWeapon(weapon.Rarity, this.filters.rarity))
+                .filter(weapon => this.filterWeapon(weapon.ElementalType, this.filters.element))
+                .filter(weapon => this.filterWeapon(weapon.tier, this.filters.tier))
+                .sort(function(weapon1, weapon2) {
+                    return weapon1.FortCraftLevel - weapon2.FortCraftLevel;
+                })
+
+        }
+    },
+    methods: {
+        filterWeapon: function(element1, element2) {
+            return element1.toLowerCase().includes(element2.toLowerCase());
+        }
     }
 })
 
