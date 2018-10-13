@@ -238,6 +238,7 @@ new Vue({
             this.addMaterialsBasedOnWeapon(weapon);
             // add all parent materials
             if (weapon.includeParents) {
+                this.includeAllParentMaterials(weapon);
                 weapon.includeParents = false;
             }
         },
