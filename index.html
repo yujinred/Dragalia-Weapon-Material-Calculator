@@ -209,16 +209,15 @@ new Vue({
                 .filter(weapon => this.filterWeapon(weapon.Type, this.filters.type))
                 .filter(weapon => this.filterWeapon(weapon.Rarity, this.filters.rarity))
                 .filter(weapon => this.filterWeapon(weapon.ElementalType, this.filters.element))
-                .filter(weapon => this.filterWeapon(weapon.tier, this.filters.tier))
-                .sort(function(weapon1, weapon2) {
-                    return weapon1.WeaponName - weapon2.WeaponName;
-                    // return weapon1.FortCraftLevel - weapon2.FortCraftLevel;
-                })
+                .filter(weapon => this.filterWeapon(weapon.tier, this.filters.tier));
 
         },
         selectedWeapons: function () {
             return this.all_weapons
-                .filter(weapon => weapon.quantity > 0);
+                .filter(weapon => weapon.quantity > 0)
+                .sort(function(weapon1, weapon2) {
+                    return weapon2.tier - weapon1.tier;
+                });
         },
         requiredMaterials: function () {
             return this.all_materials
