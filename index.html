@@ -94,8 +94,10 @@
                 </thead>
                 <tbody>
                     <tr v-for="weapon in weapon_list">
-                        <td><button class="ui button" v-on:click="addWeaponToRepository(weapon, 1)">Add</button>
+                        <td>
+                            <button class="ui button" v-on:click="addWeaponToRepository(weapon, 1)">Add</button>
                             <button class="ui button" v-on:click="addAllPrereqWeapons(weapon)">Add All Prereq</button>
+                            <button class="ui button" v-on:click="addMaxUnbind(weapon)">Add Max Unbind</button>
                         </td>
                         <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
                         <td>{{weapon.WeaponName}}</td>
@@ -115,7 +117,9 @@
         <table class="ui celled padded table">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>
+                                <button class="ui button" v-on:click="clearRepository()">Clear All</button>
+                        </th>
                         <th>Name</th>
                         <th>Quantity</th>
                         <th>Modify Quantity</th>
@@ -253,6 +257,15 @@ new Vue({
         addAllPrereqWeapons: function(weapon) {
             this.addWeaponToRepository(weapon, 1);
             this.includeAllParentMaterials(weapon);
+        },
+        addMaxUnbind: function(weapon) {
+            for (var i = 0; i < 5; i++) {
+                this.addAllPrereqWeapons(weapon);
+            }
+        },
+        clearRepository: function() {
+            this.selectedWeapons.forEach(weapon => weapon.quantity = 0);
+            this.requiredMaterials.forEach(material => material.quantity = 0);
         },
         addRupies: function(amount) {
             var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", "Rupies");
