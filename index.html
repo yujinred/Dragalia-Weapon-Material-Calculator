@@ -94,7 +94,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="weapon in weapon_list">
-                        <td><button class="ui button" v-on:click="addWeaponToRepository(weapon)">Add</button>
+                        <td><button class="ui button" v-on:click="addWeaponToRepository(weapon, 1)">Add</button>
                             <button class="ui button" v-on:click="addAllPrereqWeapons(weapon)">Add All Prereq</button>
                         </td>
                         <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
@@ -128,9 +128,11 @@
                         <td>{{weapon.quantity}}</td>
                         <td>
                             <div>
-                            <button class="ui button" v-on:click="addWeaponToRepository(weapon)">+</button>
-                            <button class="ui button" v-on:click="removeWeaponToRepository(weapon)">-</button>
-                            <button class="ui button" v-on:click="removeAllWeaponsFromRepository(weapon)">remove all</button>
+                                <button class="ui button" v-on:click="addWeaponToRepository(weapon, 1)">+</button>
+                                <button class="ui button" v-on:click="removeWeaponToRepository(weapon, 1)">-</button>
+                                <button class="ui button" v-on:click="addWeaponToRepository(weapon, 5)">+5</button>
+                                <button class="ui button" v-on:click="removeWeaponToRepository(weapon, 5)">-5</button>
+                                <button class="ui button" v-on:click="removeAllWeaponsFromRepository(weapon)">remove all</button>
                             </div>
                         </td>
                     </tr>
@@ -231,21 +233,25 @@ new Vue({
         filterWeapon: function(element1, element2) {
             return element1.toLowerCase().includes(element2.toLowerCase());
         },
-        addWeaponToRepository: function(weapon) {
-            weapon.quantity++;
-            this.addMaterialsBasedOnWeapon(weapon);
+        addWeaponToRepository: function(weapon, modifier) {
+            for (var i = 0; i < modifier; ++i) {
+                weapon.quantity++;
+                this.addMaterialsBasedOnWeapon(weapon);
+            }
         },
-        removeWeaponToRepository: function(weapon) {
-            weapon.quantity--;
-            this.removeMaterialsBasedOnWeapon(weapon);
+        removeWeaponToRepository: function(weapon, modifier) {
+            for (var i = 0; i < modifier && weapon.quantity > 0; ++i) {
+                weapon.quantity--;
+                this.removeMaterialsBasedOnWeapon(weapon);
+            }
         },
         removeAllWeaponsFromRepository: function(weapon) {
             while (weapon.quantity != 0) {
-                this.removeWeaponToRepository(weapon);
+                this.removeWeaponToRepository(weapon, 1);
             }
         },
         addAllPrereqWeapons: function(weapon) {
-            this.addWeaponToRepository(weapon);
+            this.addWeaponToRepository(weapon, 1);
             this.includeAllParentMaterials(weapon);
         },
         addRupies: function(amount) {
@@ -298,7 +304,7 @@ new Vue({
             
             // need to max unbind weapon first
             for (var i = 0; i < 5; i++) {
-                this.addWeaponToRepository(parentWeapon);
+                this.addWeaponToRepository(parentWeapon, 1);
                 this.includeAllParentMaterials(parentWeapon);
             }
         },
@@ -309,7 +315,7 @@ new Vue({
             
             // need to max unbind weapon first
             for (var i = 0; i < 5; i++) {
-                this.removeWeaponToRepository(parentWeapon);
+                this.removeWeaponToRepository(parentWeapon, 1);
                 this.excludeAllParentMaterials(parentWeapon);
             }
         }
