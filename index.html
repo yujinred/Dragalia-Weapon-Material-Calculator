@@ -95,9 +95,9 @@
                 <tbody>
                     <tr v-for="weapon in weapon_list">
                         <td>
-                            <button class="ui button" v-on:click="addWeaponToRepository(weapon, 1)">Add</button>
-                            <button class="ui button" v-on:click="addAllPrereqWeapons(weapon)">Add All Prereq</button>
-                            <button class="ui button" v-on:click="addMaxUnbind(weapon)">Add Max Unbind</button>
+                            <button class="ui button" style="margin: 2px" v-on:click="addWeaponToRepository(weapon, 1)">Add One</button><br>
+                            <button class="ui button" style="margin: 2px" v-on:click="addAllPrereqWeapons(weapon)">Add All Prereq</button><br>
+                            <button class="ui button" style="margin: 2px" v-on:click="addMaxUnbind(weapon)">Add Max Unbind</button>
                         </td>
                         <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
                         <td>{{weapon.WeaponName}}</td>
