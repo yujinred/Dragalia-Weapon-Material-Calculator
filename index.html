@@ -121,7 +121,9 @@
                         </th>
                         <th>Name</th>
                         <th>Quantity</th>
-                        <th>Modify Quantity</th>
+                        <th>Max HP/MAX STR</th>
+                        <th>Skill (Hover to see description)</th>
+                        <th><button class="ui button" v-on:click="toggleQuantityModifier()">Modify Quantity</button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -129,8 +131,14 @@
                         <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
                         <td>{{weapon.WeaponName}}</td>
                         <td>{{weapon.quantity}}</td>
+                        <td>{{weapon.MaxHp}} / {{weapon.MaxAtk}}</td>
                         <td>
-                            <div>
+                                <div class="ui icon button" :data-tooltip="weapon.SkillDesc">
+                                        {{weapon.SkillName}}
+                                      </div>
+                        </td>
+                        <td>
+                            <div v-if="showModifier">
                                 <button class="ui button" v-on:click="addWeaponToRepository(weapon, 1)">+</button>
                                 <button class="ui button" v-on:click="removeWeaponToRepository(weapon, 1)">-</button>
                                 <button class="ui button" v-on:click="addWeaponToRepository(weapon, 5)">+5</button>
@@ -196,7 +204,8 @@ new Vue({
             rarity: "",
             element: "",
             tier: ""
-        }
+        },
+        showModifier: false
     },
     computed: {
         material_list: function () {
@@ -329,6 +338,9 @@ new Vue({
                 this.removeWeaponToRepository(parentWeapon, 1);
                 this.excludeAllParentMaterials(parentWeapon);
             }
+        },
+        toggleQuantityModifier: function() {
+            this.showModifier = !this.showModifier;
         }
     }
 });
