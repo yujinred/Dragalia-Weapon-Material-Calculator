@@ -121,7 +121,7 @@
                         </th>
                         <th>Name</th>
                         <th>Quantity</th>
-                        <th>Max HP/MAX STR</th>
+                        <th>Max HP/Max STR</th>
                         <th>Skill (Hover to see description)</th>
                         <th><button class="ui button" v-on:click="toggleQuantityModifier()">Modify Quantity</button></th>
                     </tr>
@@ -131,7 +131,7 @@
                         <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
                         <td>{{weapon.WeaponName}}</td>
                         <td>{{weapon.quantity}}</td>
-                        <td>{{weapon.MaxHp}} / {{weapon.MaxAtk}}</td>
+                        <td><div style="color: blue">{{weapon.MaxHp}}</div> / <div style="color: red">{{weapon.MaxAtk}}</div></td>
                         <td>
                                 <div class="ui icon button" :data-tooltip="weapon.SkillDesc">
                                         {{weapon.SkillName}}
