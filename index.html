@@ -120,18 +120,18 @@
                                 <button class="ui button" v-on:click="clearRepository()">Clear All</button>
                         </th>
                         <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Max HP/MAX STR</th>
+                        <th>#</th>
+                        <th>Max HP/Max STR</th>
                         <th>Skill (Hover to see description)</th>
                         <th><button class="ui button" v-on:click="toggleQuantityModifier()">Modify Quantity</button></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="weapon in selectedWeapons">
-                        <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
+                        <td><img :name="weapon.WeaponName" style="width: 40px; height: 40px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
                         <td>{{weapon.WeaponName}}</td>
                         <td>{{weapon.quantity}}</td>
-                        <td>{{weapon.MaxHp}} / {{weapon.MaxAtk}}</td>
+                        <td><span style="color: blue">{{weapon.MaxHp}}</span> / <span style="color: red">{{weapon.MaxAtk}}</span></td>
                         <td>
                                 <div class="ui icon button" :data-tooltip="weapon.SkillDesc">
                                         {{weapon.SkillName}}
