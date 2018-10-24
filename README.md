@@ -1,6 +1,8 @@
-# Dragalia Weapon Material Calculator
+# Dragalia Lost - Weapon Material Calculator
 
 This is a program to calculate how much material you need to make your desired weapons.
+
+LINK TO THE CALC: https://yujinred.github.io/Dragalia-Weapon-Material-Calculator/
 
 
 ### Source
