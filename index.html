@@ -138,9 +138,10 @@
               <td>{{weapon.quantity}}</td>
               <td><span style="color: blue">{{weapon.MaxHp}}</span> / <span style="color: red">{{weapon.MaxAtk}}</span></td>
               <td>
-                <div class="ui icon button" :data-tooltip="weapon.SkillDesc">
+                <div v-if="weapon.SkillDesc" class="ui icon button" :data-tooltip="weapon.SkillDesc">
                   {{weapon.SkillName}}
                 </div>
+                <div v-else class="empty"></div>
               </td>
               <td>
                 <div v-if="showModifier">
@@ -171,9 +172,9 @@
                  <td><div :data-tooltip="material.Description"><img :name="material.Name" style="width: 70px; height: 70px" :src="'images/materials/' + material.Id + '.png'"></div></td>
                  <td>{{material.Name}}</td>
                  <td>{{material.quantity.toLocaleString()}}</td>
-                 <td>
+                 <td style="width: 606px;">
                    <div v-for="(quest, index) in material.Obtain" style="position: relative; text-align: center; color: white; text-weight: bolder;">
-                     <img :name="quest" style="width: 525px; height: 123px" :src="'images/quests/' + quest + '.png'">
+                     <img v-if="quest != 'Events'" :name="quest" style="width: 525px; height: 123px" :src="'images/quests/' + quest + '.png'">
                      <div v-if="material.Difficulty != ''" class="bottom-right" style="position: absolute; bottom: 8px; right: 30px; padding: 10px; background: rgba(0, 0, 0, 0.7);">
                        {{material.Difficulty[index]}}
                      </div>
