@@ -7,8 +7,8 @@
     <link rel="icon" type="image/png" href="images/blacksmith.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"/>
     <script src="lib/vue.min.js"></script>
-    <script 
-        src="https://code.jquery.com/jquery-3.1.1.min.js" 
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
         crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
@@ -26,334 +26,339 @@
 </head>
 <body>
     <div id="app" class="ui stackable grid" style="padding: 1em;">
-        <div id="weapon-list" class="eight wide computer tablet column centered">
-        <div id="main-panel" class="ui center aligned">
+        <div id="weapon-list" class="seven wide computer tablet column centered">
+          <div id="main-panel" class="ui center aligned">
             <h1 class="ui header">Dragalia Weapon Material Calculator</h1>
             <div class="ui divider"></div>
             <!-- Sort and filtering -->
             <div class="ui form">
-                <div class="one field">
-                    <div class="field">
-                    <label>Search Weapon Name:</label>
-                    <input type="text" v-model="filters.name">
-                    </div>
+              <div class="one field">
+                <div class="field">
+                <label>Search Weapon Name:</label>
+                <input type="text" v-model="filters.name">
                 </div>
-                <div class="four fields">
-                    <div class="field">
-                    <label>Weapon</label>
-                    <select v-model="filters.type">
-                        <option selected value="">All</option>
-                        <option>Sword</option>
-                        <option>Blade</option>
-                        <option>Dagger</option>
-                        <option>Axe</option>
-                        <option>Lance</option>
-                        <option>Bow</option>
-                        <option>Wand</option>
-                        <option>Staff</option>
-                    </select>
-                    </div>
-                    <div class="field">
-                    <label>Rarity</label>
-                    <select v-model="filters.rarity">
-                        <option selected value="">All</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                    </div>
-                    <div class="field">
-                        <label>Element</label>
-                        <select v-model="filters.element">
-                            <option selected value="">All</option>
-                            <option>None</option>
-                            <option>Flame</option>
-                            <option>Water</option>
-                            <option>Wind</option>
-                            <option>Shadow</option>
-                            <option>Light</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label>Tiers</label>
-                        <select v-model="filters.tier">
-                            <option selected value="">All</option>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </select>
-                    </div>
+              </div>
+              <div class="four fields">
+                <div class="field">
+                  <label>Weapon</label>
+                  <select v-model="filters.type">
+                    <option selected value="">All</option>
+                    <option>Sword</option>
+                    <option>Blade</option>
+                    <option>Dagger</option>
+                    <option>Axe</option>
+                    <option>Lance</option>
+                    <option>Bow</option>
+                    <option>Wand</option>
+                    <option>Staff</option>
+                  </select>
                 </div>
+                <div class="field">
+                  <label>Rarity</label>
+                  <select v-model="filters.rarity">
+                    <option selected value="">All</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Element</label>
+                  <select v-model="filters.element">
+                    <option selected value="">All</option>
+                    <option>None</option>
+                    <option>Flame</option>
+                    <option>Water</option>
+                    <option>Wind</option>
+                    <option>Shadow</option>
+                    <option>Light</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Tiers</label>
+                  <select v-model="filters.tier">
+                    <option selected value="">All</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                  </select>
+                </div>
+              </div>
             </div>
             <div class="ui divider"></div>
             <!-- Weapon List -->
             <table class="ui celled padded table">
-                <thead>
-                    <tr>
-                        <th>Add Weapon</th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Rarity</th>
-                        <th>Element</th>
-                        <th>Tier</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="weapon in weapon_list">
-                        <td>
-                            <button class="ui button" style="margin: 2px" v-on:click="addWeaponToRepository(weapon, 1)">Add One</button><br>
-                            <button class="ui button" style="margin: 2px" v-on:click="addAllPrereqWeapons(weapon)">Add All Prereq</button><br>
-                            <button class="ui button" style="margin: 2px" v-on:click="addMaxUnbind(weapon)">Add Max Unbind</button>
-                        </td>
-                        <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
-                        <td>{{weapon.WeaponName}}</td>
-                        <td>{{weapon.Type}}</td>
-                        <td>{{weapon.Rarity}}</td>
-                        <td>{{weapon.ElementalType}}</td>
-                        <td>{{weapon.tier}}</td>
-                    </tr>
-                </tbody>
+              <thead>
+                <tr>
+                  <th>Add Weapon</th>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Rarity</th>
+                  <th>Element</th>
+                  <th>Tier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="weapon in weapon_list">
+                    <td>
+                        <button class="ui button" style="margin: 2px" v-on:click="addWeaponToRepository(weapon, 1)">Add One</button><br>
+                        <button class="ui button" style="margin: 2px" v-on:click="addAllPrereqWeapons(weapon)">Add All Prereq</button><br>
+                        <button class="ui button" style="margin: 2px" v-on:click="addMaxUnbind(weapon)">Add Max Unbind</button>
+                    </td>
+                    <td><img :name="weapon.WeaponName" style="width: 70px; height: 70px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
+                    <td>{{weapon.WeaponName}}</td>
+                    <td>{{weapon.Type}}</td>
+                    <td>{{weapon.Rarity}}</td>
+                    <td>{{weapon.ElementalType}}</td>
+                    <td>{{weapon.tier}}</td>
+                </tr>
+              </tbody>
             </table>
-        </div>
+          </div>
         </div>
         <!-- Weapon Repository List -->
-        <div id="result-panel" class="eight wide computer tablet column centered">
+        <div id="result-panel" class="nine wide computer tablet column centered">
         <div class="ui header">Weapon Repository</div>
-        
         <table class="ui celled padded table">
-                <thead>
-                    <tr>
-                        <th>
-                                <button class="ui button" v-on:click="clearRepository()">Clear All</button>
-                        </th>
-                        <th>Name</th>
-                        <th>#</th>
-                        <th>Max HP/Max STR</th>
-                        <th>Skill (Hover to see description)</th>
-                        <th><button class="ui button" v-on:click="toggleQuantityModifier()">Modify Quantity</button></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="weapon in selectedWeapons">
-                        <td><img :name="weapon.WeaponName" style="width: 40px; height: 40px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
-                        <td>{{weapon.WeaponName}}</td>
-                        <td>{{weapon.quantity}}</td>
-                        <td><span style="color: blue">{{weapon.MaxHp}}</span> / <span style="color: red">{{weapon.MaxAtk}}</span></td>
-                        <td>
-                                <div class="ui icon button" :data-tooltip="weapon.SkillDesc">
-                                        {{weapon.SkillName}}
-                                      </div>
-                        </td>
-                        <td>
-                            <div v-if="showModifier">
-                                <button class="ui button" v-on:click="addWeaponToRepository(weapon, 1)">+</button>
-                                <button class="ui button" v-on:click="removeWeaponToRepository(weapon, 1)">-</button>
-                                <button class="ui button" v-on:click="addWeaponToRepository(weapon, 5)">+5</button>
-                                <button class="ui button" v-on:click="removeWeaponToRepository(weapon, 5)">-5</button>
-                                <button class="ui button" v-on:click="removeAllWeaponsFromRepository(weapon)">remove all</button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-             <!-- Material List -->
-             <div class="ui header">Materials Needed</div>
-             <!-- Weapon Repository List -->
-             <table class="ui celled padded table">
-                 <thead>
-                     <tr>
-                         <th></th>
-                         <th>Material</th>
-                         <th>Quantity</th>
-                     </tr>
-                 </thead>
-                 <tbody>
-                         <tr v-for="material in requiredMaterials">
-                             <td><img :name="material.Name" style="width: 70px; height: 70px" :src="'images/materials/' + material.Id + '.png'"></td>
-                             <td>{{material.Name}}</td>
-                             <td>{{material.quantity.toLocaleString()}}</td>
-                         </tr>
-                     </tbody>
-             </table>
-        </div>
-        </div>
-        <div>Source Code: <a href="https://github.com/yujinred/Dragalia-Weapon-Material-Calculator">https://github.com/yujinred/Dragalia-Weapon-Material-Calculator</a></div>
+          <thead>
+            <tr>
+              <th><button class="ui button" v-on:click="clearRepository()">Clear All</button></th>
+              <th>Name</th>
+              <th>#</th>
+              <th>Max HP/Max STR</th>
+              <th>Skill (Hover to see description)</th>
+              <th><button class="ui button" v-on:click="toggleQuantityModifier()">Modify Quantity</button></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="weapon in selectedWeapons">
+              <td><img :name="weapon.WeaponName" style="width: 40px; height: 40px" :src="'images/weapons/' + weapon.BaseId + '_01_' + weapon.FormId + '.png'"></td>
+              <td>{{weapon.WeaponName}}</td>
+              <td>{{weapon.quantity}}</td>
+              <td><span style="color: blue">{{weapon.MaxHp}}</span> / <span style="color: red">{{weapon.MaxAtk}}</span></td>
+              <td>
+                <div v-if="weapon.SkillDesc" class="ui icon button" :data-tooltip="weapon.SkillDesc">
+                  {{weapon.SkillName}}
+                </div>
+                <div v-else class="empty"></div>
+              </td>
+              <td>
+                <div v-if="showModifier">
+                  <button class="ui button" v-on:click="addWeaponToRepository(weapon, 1)">+</button>
+                  <button class="ui button" v-on:click="removeWeaponToRepository(weapon, 1)">-</button>
+                  <button class="ui button" v-on:click="addWeaponToRepository(weapon, 5)">+5</button>
+                  <button class="ui button" v-on:click="removeWeaponToRepository(weapon, 5)">-5</button>
+                  <button class="ui button" v-on:click="removeAllWeaponsFromRepository(weapon)">remove all</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+         <!-- Material List -->
+         <div class="ui header">Materials Needed</div>
+         <!-- Material Needed List -->
+         <table class="ui celled padded table">
+           <thead>
+             <tr>
+               <th></th>
+               <th>Material</th>
+               <th>Quantity</th>
+               <th>Where to Obtain</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr v-for="material in requiredMaterials">
+                 <td><div :data-tooltip="material.Description"><img :name="material.Name" style="width: 70px; height: 70px" :src="'images/materials/' + material.Id + '.png'"></div></td>
+                 <td>{{material.Name}}</td>
+                 <td>{{material.quantity.toLocaleString()}}</td>
+                 <td style="width: 606px;">
+                   <div v-for="(quest, index) in material.Obtain" style="position: relative; text-align: center; color: white; text-weight: bolder;">
+                     <img v-if="quest != 'Events'" :name="quest" style="width: 525px; height: 123px" :src="'images/quests/' + quest + '.png'">
+                     <div v-if="material.Difficulty != ''" class="bottom-right" style="position: absolute; bottom: 8px; right: 30px; padding: 10px; background: rgba(0, 0, 0, 0.7);">
+                       {{material.Difficulty[index]}}
+                     </div>
+                     <div v-else></div>
+                   </div>
+                 </td>
+             </tr>
+           </tbody>
+        </table>
+      </div>
     </div>
+    <div>Source Code: <a href="https://github.com/yujinred/Dragalia-Weapon-Material-Calculator">https://github.com/yujinred/Dragalia-Weapon-Material-Calculator</a></div>
+  </div>
 </body>
 
 
 <script src="weapon_data.js"></script>
 <script src="material_data.js"></script>
 <script>
-weapons.forEach(function(weapon) {
-    weapon.tier = Math.floor(weapon.CraftNodeId/100).toString();
-    weapon.includeParents = false;
-    weapon.quantity = 0;
-    weapon.AssembleCoin = parseInt(weapon.AssembleCoin);
-    weapon.CraftMaterialQuantity1 = parseInt(weapon.CraftMaterialQuantity1);
-    weapon.CraftMaterialQuantity2 = parseInt(weapon.CraftMaterialQuantity2);
-    weapon.CraftMaterialQuantity3 = parseInt(weapon.CraftMaterialQuantity3);
-    weapon.CraftMaterialQuantity4 = parseInt(weapon.CraftMaterialQuantity4);
-    weapon.CraftMaterialQuantity5 = parseInt(weapon.CraftMaterialQuantity5);
-});
-materials.forEach(function(material) {
-    material.quantity = 0;
-})
+  weapons.forEach(function(weapon) {
+      weapon.tier = Math.floor(weapon.CraftNodeId/100).toString();
+      weapon.includeParents = false;
+      weapon.quantity = 0;
+      weapon.AssembleCoin = parseInt(weapon.AssembleCoin);
+      weapon.CraftMaterialQuantity1 = parseInt(weapon.CraftMaterialQuantity1);
+      weapon.CraftMaterialQuantity2 = parseInt(weapon.CraftMaterialQuantity2);
+      weapon.CraftMaterialQuantity3 = parseInt(weapon.CraftMaterialQuantity3);
+      weapon.CraftMaterialQuantity4 = parseInt(weapon.CraftMaterialQuantity4);
+      weapon.CraftMaterialQuantity5 = parseInt(weapon.CraftMaterialQuantity5);
+  });
+  materials.forEach(function(material) {
+      material.quantity = 0;
+  })
 
-new Vue({
-    el: '#app',
-    data: {
-        all_weapons: weapons,
-        all_materials: materials,
-        filters: {
-            name: "",
-            type: "",
-            rarity: "",
-            element: "",
-            tier: ""
-        },
-        showModifier: false
-    },
-    computed: {
-        material_list: function () {
-            return this.all_materials;
-        },
-        weapon_list: function () {
-            return this.all_weapons
-                .filter(weapon => this.filterWeapon(weapon.WeaponName, this.filters.name))
-                .filter(weapon => this.filterWeapon(weapon.Type, this.filters.type))
-                .filter(weapon => this.filterWeapon(weapon.Rarity, this.filters.rarity))
-                .filter(weapon => this.filterWeapon(weapon.ElementalType, this.filters.element))
-                .filter(weapon => this.filterWeapon(weapon.tier, this.filters.tier));
+  new Vue({
+      el: '#app',
+      data: {
+          all_weapons: weapons,
+          all_materials: materials,
+          filters: {
+              name: "",
+              type: "",
+              rarity: "",
+              element: "",
+              tier: ""
+          },
+          showModifier: false
+      },
+      computed: {
+          material_list: function () {
+              return this.all_materials;
+          },
+          weapon_list: function () {
+              return this.all_weapons
+                  .filter(weapon => this.filterWeapon(weapon.WeaponName, this.filters.name))
+                  .filter(weapon => this.filterWeapon(weapon.Type, this.filters.type))
+                  .filter(weapon => this.filterWeapon(weapon.Rarity, this.filters.rarity))
+                  .filter(weapon => this.filterWeapon(weapon.ElementalType, this.filters.element))
+                  .filter(weapon => this.filterWeapon(weapon.tier, this.filters.tier));
 
-        },
-        selectedWeapons: function () {
-            return this.all_weapons
-                .filter(weapon => weapon.quantity > 0)
-                .sort(function(weapon1, weapon2) {
-                    return weapon2.tier - weapon1.tier;
-                });
-        },
-        requiredMaterials: function () {
-            return this.all_materials
-            .filter(material => material.quantity > 0);
-        }
-    },
-    methods: {
-        findArrayIndexBasedOnAttribute: function (array, attribute, value) {
-            for (var i = 0; i < array.length; i++) {
-                if (array[i][attribute].toLowerCase() === value.toLowerCase()) {
-                    return i;
-                }
-            }
-            return -1;
-        },
-        filterWeapon: function(element1, element2) {
-            return element1.toLowerCase().includes(element2.toLowerCase());
-        },
-        addWeaponToRepository: function(weapon, modifier) {
-            for (var i = 0; i < modifier; ++i) {
-                weapon.quantity++;
-                this.addMaterialsBasedOnWeapon(weapon);
-            }
-        },
-        removeWeaponToRepository: function(weapon, modifier) {
-            for (var i = 0; i < modifier && weapon.quantity > 0; ++i) {
-                weapon.quantity--;
-                this.removeMaterialsBasedOnWeapon(weapon);
-            }
-        },
-        removeAllWeaponsFromRepository: function(weapon) {
-            while (weapon.quantity != 0) {
-                this.removeWeaponToRepository(weapon, 1);
-            }
-        },
-        addAllPrereqWeapons: function(weapon) {
-            this.addWeaponToRepository(weapon, 1);
-            this.includeAllParentMaterials(weapon);
-        },
-        addMaxUnbind: function(weapon) {
-            for (var i = 0; i < 5; i++) {
-                this.addAllPrereqWeapons(weapon);
-            }
-        },
-        clearRepository: function() {
-            this.selectedWeapons.forEach(weapon => weapon.quantity = 0);
-            this.requiredMaterials.forEach(material => material.quantity = 0);
-        },
-        addRupies: function(amount) {
-            var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", "Rupies");
-            this.all_materials[index].quantity += amount;
-        },
-        removeRupies: function(amount) {
-            var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", "Rupies");
-            this.all_materials[index].quantity -= amount;
-        },
-        addMaterial: function(materialName, quantity) {
-            if (materialName === "0") return;
-            var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", materialName);
-            if (index === -1) console.log("cannot find material " + materialName);
-            this.all_materials[index].quantity += quantity;
-        },
-        removeMaterial: function(materialName, quantity) {
-            if (materialName === "0") return;
-            var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", materialName);
-            if (index === -1) console.log("cannot find material " + materialName);
-            this.all_materials[index].quantity -= quantity;
-        },
-        addMaterialsBasedOnWeapon: function(weapon) {
-            this.addRupies(weapon.AssembleCoin);
-            this.addMaterial(weapon.CraftMaterial1, weapon.CraftMaterialQuantity1);
-            this.addMaterial(weapon.CraftMaterial2, weapon.CraftMaterialQuantity2);
-            this.addMaterial(weapon.CraftMaterial3, weapon.CraftMaterialQuantity3);
-            this.addMaterial(weapon.CraftMaterial4, weapon.CraftMaterialQuantity4);
-            this.addMaterial(weapon.CraftMaterial5, weapon.CraftMaterialQuantity5);
-            
-        },
-        removeMaterialsBasedOnWeapon: function(weapon) {
-            this.removeRupies(weapon.AssembleCoin);
-            this.removeMaterial(weapon.CraftMaterial1, weapon.CraftMaterialQuantity1);
-            this.removeMaterial(weapon.CraftMaterial2, weapon.CraftMaterialQuantity2);
-            this.removeMaterial(weapon.CraftMaterial3, weapon.CraftMaterialQuantity3);
-            this.removeMaterial(weapon.CraftMaterial4, weapon.CraftMaterialQuantity4);
-            this.removeMaterial(weapon.CraftMaterial5, weapon.CraftMaterialQuantity5);
-        },
-        findParentWeaponBasedOnCraftId: function(ParentCraftNodeId, CraftGroupId) {
-            var parentWeapon = this.all_weapons
-                .filter(weapon => weapon.CraftNodeId === ParentCraftNodeId)
-                .filter(weapon => weapon.CraftGroupId === CraftGroupId);
-            if (parentWeapon !== null || parentWeapon.length > 0) return parentWeapon[0];
-        },
-        includeAllParentMaterials: function(weapon) {
-            if (weapon.ParentCraftNodeId === null || weapon.ParentCraftNodeId === "0") return;
-            
-            var parentWeapon = this.findParentWeaponBasedOnCraftId(weapon.ParentCraftNodeId, weapon.CraftGroupId);
-            
-            // need to max unbind weapon first
-            for (var i = 0; i < 5; i++) {
-                this.addWeaponToRepository(parentWeapon, 1);
-                this.includeAllParentMaterials(parentWeapon);
-            }
-        },
-        excludeAllParentMaterials: function(weapon) {
-            if (weapon.ParentCraftNodeId === null || weapon.ParentCraftNodeId === "0") return;
+          },
+          selectedWeapons: function () {
+              return this.all_weapons
+                  .filter(weapon => weapon.quantity > 0)
+                  .sort(function(weapon1, weapon2) {
+                      return weapon2.tier - weapon1.tier;
+                  });
+          },
+          requiredMaterials: function () {
+              return this.all_materials
+              .filter(material => material.quantity > 0);
+          }
+      },
+      methods: {
+          findArrayIndexBasedOnAttribute: function (array, attribute, value) {
+              for (var i = 0; i < array.length; i++) {
+                  if (array[i][attribute].toLowerCase() === value.toLowerCase()) {
+                      return i;
+                  }
+              }
+              return -1;
+          },
+          filterWeapon: function(element1, element2) {
+              return element1.toLowerCase().includes(element2.toLowerCase());
+          },
+          addWeaponToRepository: function(weapon, modifier) {
+              for (var i = 0; i < modifier; ++i) {
+                  weapon.quantity++;
+                  this.addMaterialsBasedOnWeapon(weapon);
+              }
+          },
+          removeWeaponToRepository: function(weapon, modifier) {
+              for (var i = 0; i < modifier && weapon.quantity > 0; ++i) {
+                  weapon.quantity--;
+                  this.removeMaterialsBasedOnWeapon(weapon);
+              }
+          },
+          removeAllWeaponsFromRepository: function(weapon) {
+              while (weapon.quantity != 0) {
+                  this.removeWeaponToRepository(weapon, 1);
+              }
+          },
+          addAllPrereqWeapons: function(weapon) {
+              this.addWeaponToRepository(weapon, 1);
+              this.includeAllParentMaterials(weapon);
+          },
+          addMaxUnbind: function(weapon) {
+              for (var i = 0; i < 5; i++) {
+                  this.addAllPrereqWeapons(weapon);
+              }
+          },
+          clearRepository: function() {
+              this.selectedWeapons.forEach(weapon => weapon.quantity = 0);
+              this.requiredMaterials.forEach(material => material.quantity = 0);
+          },
+          addRupies: function(amount) {
+              var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", "Rupies");
+              this.all_materials[index].quantity += amount;
+          },
+          removeRupies: function(amount) {
+              var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", "Rupies");
+              this.all_materials[index].quantity -= amount;
+          },
+          addMaterial: function(materialName, quantity) {
+              if (materialName === "0") return;
+              var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", materialName);
+              if (index === -1) console.log("cannot find material " + materialName);
+              this.all_materials[index].quantity += quantity;
+          },
+          removeMaterial: function(materialName, quantity) {
+              if (materialName === "0") return;
+              var index = this.findArrayIndexBasedOnAttribute(this.all_materials, "Name", materialName);
+              if (index === -1) console.log("cannot find material " + materialName);
+              this.all_materials[index].quantity -= quantity;
+          },
+          addMaterialsBasedOnWeapon: function(weapon) {
+              this.addRupies(weapon.AssembleCoin);
+              this.addMaterial(weapon.CraftMaterial1, weapon.CraftMaterialQuantity1);
+              this.addMaterial(weapon.CraftMaterial2, weapon.CraftMaterialQuantity2);
+              this.addMaterial(weapon.CraftMaterial3, weapon.CraftMaterialQuantity3);
+              this.addMaterial(weapon.CraftMaterial4, weapon.CraftMaterialQuantity4);
+              this.addMaterial(weapon.CraftMaterial5, weapon.CraftMaterialQuantity5);
 
-            var parentWeapon = this.findParentWeaponBasedOnCraftId(weapon.ParentCraftNodeId, weapon.CraftGroupId);
-            
-            // need to max unbind weapon first
-            for (var i = 0; i < 5; i++) {
-                this.removeWeaponToRepository(parentWeapon, 1);
-                this.excludeAllParentMaterials(parentWeapon);
-            }
-        },
-        toggleQuantityModifier: function() {
-            this.showModifier = !this.showModifier;
-        }
-    }
-});
+          },
+          removeMaterialsBasedOnWeapon: function(weapon) {
+              this.removeRupies(weapon.AssembleCoin);
+              this.removeMaterial(weapon.CraftMaterial1, weapon.CraftMaterialQuantity1);
+              this.removeMaterial(weapon.CraftMaterial2, weapon.CraftMaterialQuantity2);
+              this.removeMaterial(weapon.CraftMaterial3, weapon.CraftMaterialQuantity3);
+              this.removeMaterial(weapon.CraftMaterial4, weapon.CraftMaterialQuantity4);
+              this.removeMaterial(weapon.CraftMaterial5, weapon.CraftMaterialQuantity5);
+          },
+          findParentWeaponBasedOnCraftId: function(ParentCraftNodeId, CraftGroupId) {
+              var parentWeapon = this.all_weapons
+                  .filter(weapon => weapon.CraftNodeId === ParentCraftNodeId)
+                  .filter(weapon => weapon.CraftGroupId === CraftGroupId);
+              if (parentWeapon !== null || parentWeapon.length > 0) return parentWeapon[0];
+          },
+          includeAllParentMaterials: function(weapon) {
+              if (weapon.ParentCraftNodeId === null || weapon.ParentCraftNodeId === "0") return;
 
+              var parentWeapon = this.findParentWeaponBasedOnCraftId(weapon.ParentCraftNodeId, weapon.CraftGroupId);
+
+              // need to max unbind weapon first
+              for (var i = 0; i < 5; i++) {
+                  this.addWeaponToRepository(parentWeapon, 1);
+                  this.includeAllParentMaterials(parentWeapon);
+              }
+          },
+          excludeAllParentMaterials: function(weapon) {
+              if (weapon.ParentCraftNodeId === null || weapon.ParentCraftNodeId === "0") return;
+
+              var parentWeapon = this.findParentWeaponBasedOnCraftId(weapon.ParentCraftNodeId, weapon.CraftGroupId);
+
+              // need to max unbind weapon first
+              for (var i = 0; i < 5; i++) {
+                  this.removeWeaponToRepository(parentWeapon, 1);
+                  this.excludeAllParentMaterials(parentWeapon);
+              }
+          },
+          toggleQuantityModifier: function() {
+              this.showModifier = !this.showModifier;
+          }
+      }
+  });
 </script>
-
 </html>
